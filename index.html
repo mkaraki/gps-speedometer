@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Speedometer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
+        integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .subinfo {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        #speed {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        footer {
+            margin-top: 30px;
+            border-top: 1px solid gray;
+            padding-top: 10px;
+        }
+    </style>
+    <script>let saveHistory = false;</script>
+</head>
+
+<body class="text-center">
+    <h1>GPS Speedometer</h1>
+
+    <div class="subinfo" id="position"></div>
+    <div class="subinfo" id="reversedPosition"></div>
+    <h2>
+        <span id="speed">-</span>
+        <small>km/h</small>
+    </h2>
+
+    <canvas id="speedChart"></canvas>
+    <div>
+        <input type="checkbox" id="historyTbl"
+            onchange="document.getElementById('spdTable').classList.toggle('hide', !this.checked); saveHistory = this.checked; localStorage.setItem('useHistory', '1'); return true">
+        <label for="historyTbl">History</label>
+        <button type="button" class="btn btn-primary btn-sm" onclick="dlTable()">Download CSV</button>
+    </div>
+    <table class="table hide" id="spdTable">
+        <thead>
+            <tr>
+                <th class="hide" scope="col">UnixTime</th>
+                <th scope="col">Time</th>
+                <th scope="col">Speed (km/h)</th>
+                <th class="hide" scope="col">Lat</th>
+                <th class="hide" scope="col">Lon</th>
+                <th class="hide" scope="col">Accuracy</th>
+            </tr>
+        </thead>
+        <tbody id="speedTable"></tbody>
+    </table>
+
+    <footer>
+        <span id="reversedPositionAttribution"></span>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.min.js"
+        integrity="sha512-GCiwmzA0bNGVsp1otzTJ4LWQT2jjGJENLGyLlerlzckNI30moi2EQT0AfRI7fLYYYDKR+7hnuh35r3y1uJzugw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        if (localStorage.getItem('useHistory') === '1') {
+            document.getElementById('historyTbl').checked = true;
+            document.getElementById('spdTable').classList.remove('hide');
+            saveHistory = true;
+        }
+    </script>
+    <script src="appConfig.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
